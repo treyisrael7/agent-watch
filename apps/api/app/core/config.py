@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_prefix="AGENT_WATCH_")
 
     api_title: str = "Agent Watch API"
+    api_version: str = "0.1.0"
+    api_prefix: str = "/api/v1"
     cors_origins_raw: str = Field(
         default="http://localhost:3000",
         validation_alias="AGENT_WATCH_CORS_ORIGINS",

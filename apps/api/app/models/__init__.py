@@ -1,3 +1,3 @@
-from app.models.trace import AgentSpan, AgentTrace, ToolCall, TraceMetric, TraceSummary
+from app.models.trace import SpanType, Trace, TraceSpan, TraceStatus
 
-__all__ = ["AgentSpan", "AgentTrace", "ToolCall", "TraceMetric", "TraceSummary"]
+__all__ = ["SpanType", "Trace", "TraceSpan", "TraceStatus"]

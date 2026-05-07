@@ -1,79 +1,48 @@
 {
-  "runId": "run_demo_001",
-  "name": "Research agent demo",
-  "status": "succeeded",
-  "startedAt": "2026-05-06T22:00:00Z",
-  "endedAt": "2026-05-06T22:00:08Z",
-  "durationMs": 8120,
-  "input": {
-    "prompt": "Summarize the latest agent observability practices."
-  },
-  "output": {
-    "summary": "Trace ingestion, span timelines, tool call auditing, and cost metrics."
-  },
-  "metadata": {
-    "environment": "local",
-    "agent": "research-agent"
-  },
-  "metrics": [
-    {
-      "name": "duration_ms",
-      "value": 8120,
-      "unit": "ms"
-    },
-    {
-      "name": "total_tokens",
-      "value": 1840,
-      "unit": "tokens"
-    },
-    {
-      "name": "tool_calls",
-      "value": 2,
-      "unit": "count"
-    }
-  ],
+  "run_id": "run_demo_001",
+  "agent_name": "Research Agent",
+  "status": "success",
+  "started_at": "2026-05-06T22:00:00Z",
+  "completed_at": "2026-05-06T22:00:08Z",
+  "latency_ms": 8120,
+  "user_input": "Summarize the latest agent observability practices.",
+  "final_output": "Trace ingestion, span timelines, tool call auditing, and uncertainty metrics.",
+  "uncertainty_score": 0.12,
   "spans": [
     {
-      "id": "span_plan",
-      "runId": "run_demo_001",
+      "span_id": "span_plan",
+      "type": "decision",
       "name": "Plan research task",
-      "kind": "agent",
-      "status": "ok",
-      "startedAt": "2026-05-06T22:00:00Z",
-      "endedAt": "2026-05-06T22:00:01Z",
-      "durationMs": 1000,
-      "attributes": {
-        "model": "agent-planner"
+      "input": {
+        "prompt": "Summarize the latest agent observability practices."
       },
-      "toolCalls": []
+      "output": {
+        "steps": ["retrieve sources", "synthesize", "write summary"]
+      },
+      "started_at": "2026-05-06T22:00:00Z",
+      "ended_at": "2026-05-06T22:00:01Z",
+      "latency_ms": 1000,
+      "metadata": {
+        "planner": "research-agent"
+      }
     },
     {
-      "id": "span_search",
-      "runId": "run_demo_001",
-      "parentSpanId": "span_plan",
+      "span_id": "span_search",
+      "type": "retrieval",
       "name": "Search documentation",
-      "kind": "tool",
-      "status": "ok",
-      "startedAt": "2026-05-06T22:00:01Z",
-      "endedAt": "2026-05-06T22:00:05Z",
-      "durationMs": 4200,
-      "toolCalls": [
-        {
-          "id": "tool_search_1",
-          "spanId": "span_search",
-          "name": "web_search",
-          "status": "success",
-          "input": {
-            "query": "agent observability tracing spans"
-          },
-          "output": {
-            "results": 5
-          },
-          "startedAt": "2026-05-06T22:00:01Z",
-          "endedAt": "2026-05-06T22:00:05Z",
-          "durationMs": 4200
-        }
-      ]
+      "input": {
+        "query": "agent observability tracing spans"
+      },
+      "output": {
+        "results": 5
+      },
+      "started_at": "2026-05-06T22:00:01Z",
+      "ended_at": "2026-05-06T22:00:05Z",
+      "latency_ms": 4200,
+      "metadata": {
+        "source": "docs_index",
+        "top_k": 5
+      }
     }
   ]
 }

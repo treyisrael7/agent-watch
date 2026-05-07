@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.router import api_router
 from app.core.config import settings
 
-app = FastAPI(title=settings.api_title)
+app = FastAPI(title=settings.api_title, version=settings.api_version)
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,9 +14,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(api_router, prefix="/api/v1")
+app.include_router(api_router, prefix=settings.api_prefix)
 
 
-@app.get("/health", tags=["health"])
+@app.get("/api/health", tags=["health"])
 def health_check() -> dict[str, str]:
     return {"status": "ok"}

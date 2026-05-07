@@ -1,73 +1,33 @@
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
-
-TraceStatus = Literal["queued", "running", "succeeded", "failed", "cancelled"]
-SpanStatus = Literal["pending", "running", "ok", "error", "cancelled"]
-ToolCallStatus = Literal["pending", "running", "success", "error"]
-SpanKind = Literal["agent", "llm", "tool", "workflow", "retrieval", "custom"]
+TraceStatus = Literal["success", "failed", "warning", "unstable"]
+SpanType = Literal["llm_call", "tool_call", "retrieval", "decision", "error"]
 
 
-class CamelModel(BaseModel):
-    model_config = ConfigDict(populate_by_name=True, serialize_by_alias=True)
-
-
-class TraceMetric(CamelModel):
+@dataclass(slots=True)
+class TraceSpan:
+    span_id: str
+    type: SpanType
     name: str
-    value: float
-    unit: str | None = None
+    input: Any | None
+    output: Any | None
+    started_at: datetime
+    ended_at: datetime | None
+    latency_ms: int | None
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
-class ToolCall(CamelModel):
-    id: str
-    span_id: str = Field(alias="spanId")
-    name: str
-    status: ToolCallStatus
-    input: Any | None = None
-    output: Any | None = None
-    error: str | None = None
-    started_at: datetime = Field(alias="startedAt")
-    ended_at: datetime | None = Field(default=None, alias="endedAt")
-    duration_ms: float | None = Field(default=None, alias="durationMs")
-
-
-class AgentSpan(CamelModel):
-    id: str
-    run_id: str = Field(alias="runId")
-    parent_span_id: str | None = Field(default=None, alias="parentSpanId")
-    name: str
-    kind: SpanKind
-    status: SpanStatus
-    started_at: datetime = Field(alias="startedAt")
-    ended_at: datetime | None = Field(default=None, alias="endedAt")
-    duration_ms: float | None = Field(default=None, alias="durationMs")
-    attributes: dict[str, Any] | None = None
-    tool_calls: list[ToolCall] = Field(default_factory=list, alias="toolCalls")
-
-
-class AgentTrace(CamelModel):
-    run_id: str = Field(alias="runId")
-    name: str
+@dataclass(slots=True)
+class Trace:
+    run_id: str
+    agent_name: str
     status: TraceStatus
-    started_at: datetime = Field(alias="startedAt")
-    ended_at: datetime | None = Field(default=None, alias="endedAt")
-    duration_ms: float | None = Field(default=None, alias="durationMs")
-    input: Any | None = None
-    output: Any | None = None
-    error: str | None = None
-    metadata: dict[str, Any] | None = None
-    metrics: list[TraceMetric] = Field(default_factory=list)
-    spans: list[AgentSpan] = Field(default_factory=list)
-
-
-class TraceSummary(CamelModel):
-    run_id: str = Field(alias="runId")
-    name: str
-    status: TraceStatus
-    started_at: datetime = Field(alias="startedAt")
-    ended_at: datetime | None = Field(default=None, alias="endedAt")
-    duration_ms: float | None = Field(default=None, alias="durationMs")
-    metrics: list[TraceMetric] = Field(default_factory=list)
-    span_count: int = Field(alias="spanCount")
-    tool_call_count: int = Field(alias="toolCallCount")
+    started_at: datetime
+    completed_at: datetime | None
+    latency_ms: int | None
+    user_input: str
+    final_output: str | None
+    uncertainty_score: float
+    spans: list[TraceSpan] = field(default_factory=list)

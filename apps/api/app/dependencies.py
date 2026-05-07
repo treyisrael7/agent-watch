@@ -1,9 +1,9 @@
 from collections.abc import Generator
 
-from app.repositories.trace_repository import TraceRepository
+from app.repositories.in_memory_trace_repository import InMemoryTraceRepository
 from app.services.trace_service import TraceService
 
-trace_repository = TraceRepository()
+trace_repository = InMemoryTraceRepository()
 trace_service = TraceService(trace_repository)
 
 
