@@ -1,0 +1,29 @@
+# dependencies
+node_modules
+.pnpm-store
+
+# builds
+.next
+dist
+build
+coverage
+*.tsbuildinfo
+
+# Python
+__pycache__
+.pytest_cache
+.ruff_cache
+.venv
+venv
+*.py[cod]
+
+# environment
+.env
+.env.*
+!.env.example
+
+# editor / OS
+.DS_Store
+Thumbs.db
+.idea
+.vscode

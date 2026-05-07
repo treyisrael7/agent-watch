@@ -1,0 +1,21 @@
+{
+  "name": "agent-watch",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Open-source observability layer for AI agents.",
+  "packageManager": "pnpm@10.33.4",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,css,yml,yaml}\""
+  },
+  "devDependencies": {
+    "@agent-watch/config": "workspace:*",
+    "prettier": "latest",
+    "turbo": "latest",
+    "typescript": "latest"
+  }
+}
