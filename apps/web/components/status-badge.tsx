@@ -5,10 +5,20 @@ const statusVariant: Record<TraceStatus, "default" | "secondary" | "destructive"
   queued: "outline",
   running: "secondary",
   succeeded: "default",
+  success: "default",
   failed: "destructive",
+  warning: "secondary",
+  unstable: "outline",
   cancelled: "outline",
 };
 
 export function StatusBadge({ status }: { status: TraceStatus }) {
-  return <Badge variant={statusVariant[status]}>{status}</Badge>;
+  return (
+    <Badge
+      className="capitalize shadow-[0_0_24px_rgba(45,212,191,0.12)]"
+      variant={statusVariant[status]}
+    >
+      {status}
+    </Badge>
+  );
 }

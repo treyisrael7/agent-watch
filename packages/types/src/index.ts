@@ -1,6 +1,21 @@
-export type TraceStatus = "queued" | "running" | "succeeded" | "failed" | "cancelled";
+export type TraceStatus =
+  | "queued"
+  | "running"
+  | "succeeded"
+  | "success"
+  | "failed"
+  | "warning"
+  | "unstable"
+  | "cancelled";
 
-export type SpanStatus = "pending" | "running" | "ok" | "error" | "cancelled";
+export type SpanStatus =
+  | "pending"
+  | "running"
+  | "ok"
+  | "success"
+  | "error"
+  | "warning"
+  | "cancelled";
 
 export type ToolCallStatus = "pending" | "running" | "success" | "error";
 
@@ -36,7 +51,7 @@ export type AgentSpan = {
   runId: string;
   parentSpanId?: string;
   name: string;
-  kind: "agent" | "llm" | "tool" | "workflow" | "retrieval" | "custom";
+  kind: "agent" | "llm" | "tool" | "workflow" | "retrieval" | "decision" | "error" | "custom";
   status: SpanStatus;
   startedAt: string;
   endedAt?: string;
@@ -52,6 +67,8 @@ export type AgentTrace = {
   startedAt: string;
   endedAt?: string;
   durationMs?: number;
+  latencyMs?: number;
+  uncertaintyScore: number;
   input?: unknown;
   output?: unknown;
   error?: string;
@@ -62,7 +79,15 @@ export type AgentTrace = {
 
 export type TraceSummary = Pick<
   AgentTrace,
-  "runId" | "name" | "status" | "startedAt" | "endedAt" | "durationMs" | "metrics"
+  | "runId"
+  | "name"
+  | "status"
+  | "startedAt"
+  | "endedAt"
+  | "durationMs"
+  | "latencyMs"
+  | "uncertaintyScore"
+  | "metrics"
 > & {
   spanCount: number;
   toolCallCount: number;
