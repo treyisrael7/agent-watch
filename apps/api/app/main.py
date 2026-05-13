@@ -15,6 +15,7 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix=settings.api_prefix)
+app.include_router(api_router, prefix="/api", include_in_schema=False)
 
 
 @app.get("/api/health", tags=["health"])

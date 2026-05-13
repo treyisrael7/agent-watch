@@ -48,12 +48,41 @@ pnpm dev
 
 The web app runs on `http://localhost:3000` and the API runs on `http://localhost:8000`.
 
+## Customer Support Demo Agent
+
+With `pnpm dev` running, send three refund-support traces to Agent Watch:
+
+```bash
+pnpm demo:customer-support
+```
+
+The demo posts to `http://localhost:8000/api/traces` by default and includes:
+
+- a successful grounded refund answer
+- a refund lookup tool failure
+- an unstable answer that reports a low uncertainty score
+
+To send only one scenario:
+
+```bash
+pnpm demo:customer-support successful-grounded-answer
+pnpm demo:customer-support tool-failure
+pnpm demo:customer-support unstable-low-uncertainty
+```
+
+Override the ingestion endpoint with `AGENT_WATCH_TRACE_URL` if needed:
+
+```powershell
+$env:AGENT_WATCH_TRACE_URL = "http://localhost:8000/api/v1/traces"
+pnpm demo:customer-support
+```
+
 ## Trace Ingestion
 
 Send a trace run to the API:
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/traces \
+curl -X POST http://localhost:8000/api/traces \
   -H "Content-Type: application/json" \
   -d @apps/api/examples/trace.json
 ```
