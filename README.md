@@ -19,6 +19,7 @@ The MVP lets a developer send agent trace events to a FastAPI backend and view r
 ## Packages
 
 - `packages/types`: shared TypeScript domain types
+- `packages/sdk`: TypeScript developer SDK for sending traces
 - `packages/ui`: shared React UI primitives
 - `packages/config`: shared TypeScript, ESLint, and Tailwind config
 
@@ -88,3 +89,38 @@ curl -X POST http://localhost:8000/api/traces \
 ```
 
 Then open `http://localhost:3000/traces` to view the dashboard.
+
+## TypeScript SDK
+
+Create and send traces from TypeScript with `@agent-watch/sdk`:
+
+```ts
+import { AgentWatch } from "@agent-watch/sdk";
+
+const watcher = new AgentWatch({
+  endpoint: "http://localhost:8000/api/traces",
+  apiKey: "dev-key",
+});
+
+const trace = watcher.startTrace({
+  agentName: "customer-support-agent",
+  userInput: "Can I get a refund?",
+});
+
+trace.addSpan({
+  type: "retrieval",
+  name: "Retrieve refund policy",
+  input: "refund policy",
+  output: "Refunds are allowed within 30 days.",
+});
+
+const result = await trace.end({
+  status: "success",
+  finalOutput: "The customer is eligible for a refund.",
+  uncertaintyScore: 0.14,
+});
+
+if (!result.ok) {
+  console.warn("Trace could not be sent.", result.error);
+}
+```

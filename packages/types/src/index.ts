@@ -92,3 +92,32 @@ export type TraceSummary = Pick<
   spanCount: number;
   toolCallCount: number;
 };
+
+export type TraceIngestStatus = "success" | "failed" | "warning" | "unstable";
+
+export type TraceIngestSpanType = "llm_call" | "tool_call" | "retrieval" | "decision" | "error";
+
+export type TraceIngestSpan = {
+  span_id: string;
+  type: TraceIngestSpanType;
+  name: string;
+  input?: unknown;
+  output?: unknown;
+  started_at: string;
+  ended_at?: string;
+  latency_ms?: number;
+  metadata: Record<string, unknown>;
+};
+
+export type TraceIngestPayload = {
+  run_id: string;
+  agent_name: string;
+  status: TraceIngestStatus;
+  started_at: string;
+  completed_at?: string;
+  latency_ms?: number;
+  user_input: string;
+  final_output?: string;
+  uncertainty_score: number;
+  spans: TraceIngestSpan[];
+};
