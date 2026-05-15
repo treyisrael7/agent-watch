@@ -6,16 +6,22 @@
   "packageManager": "pnpm@10.33.4",
   "scripts": {
     "dev": "turbo dev",
+    "dev:api": "corepack pnpm --filter @agent-watch/api dev",
+    "dev:web": "corepack pnpm --filter @agent-watch/web dev",
     "build": "turbo build",
     "lint": "turbo lint",
     "test": "turbo test",
     "typecheck": "turbo typecheck",
-    "demo:customer-support": "node examples/customer-support-agent/demo-agent.mjs",
+    "demo:customer-support": "corepack pnpm --filter @agent-watch/sdk build && node examples/customer-support-agent/demo-agent.mjs",
+    "demo:customer-support:success": "corepack pnpm demo:customer-support successful-refund-answer",
+    "demo:customer-support:tool-failure": "corepack pnpm demo:customer-support tool-failure",
+    "demo:customer-support:unstable": "corepack pnpm demo:customer-support unstable-uncertain-answer",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,css,yml,yaml}\""
   },
   "devDependencies": {
     "@agent-watch/config": "workspace:*",
+    "@agent-watch/sdk": "workspace:*",
     "prettier": "latest",
     "turbo": "latest",
     "typescript": "latest"

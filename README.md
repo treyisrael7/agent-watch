@@ -41,42 +41,52 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Run the monorepo from the root:
+Start the FastAPI backend from the root:
 
 ```bash
-pnpm dev
+pnpm dev:api
 ```
 
-The web app runs on `http://localhost:3000` and the API runs on `http://localhost:8000`.
+The API runs on `http://localhost:8000`.
+
+In a second terminal, start the web dashboard:
+
+```bash
+pnpm dev:web
+```
+
+The dashboard runs on `http://localhost:3000`. You can also start both apps together with `pnpm dev`.
 
 ## Customer Support Demo Agent
 
-With `pnpm dev` running, send three refund-support traces to Agent Watch:
+With the backend running, send three refund-support traces to Agent Watch:
 
 ```bash
 pnpm demo:customer-support
 ```
 
-The demo posts to `http://localhost:8000/api/traces` by default and includes:
+The example uses `@agent-watch/sdk`, posts to `http://localhost:8000/api/traces` by default, and includes:
 
 - a successful grounded refund answer
 - a refund lookup tool failure
-- an unstable answer that reports a low uncertainty score
+- an unstable answer that is overconfident despite contradictory evidence
 
 To send only one scenario:
 
 ```bash
-pnpm demo:customer-support successful-grounded-answer
-pnpm demo:customer-support tool-failure
-pnpm demo:customer-support unstable-low-uncertainty
+pnpm demo:customer-support:success
+pnpm demo:customer-support:tool-failure
+pnpm demo:customer-support:unstable
 ```
 
 Override the ingestion endpoint with `AGENT_WATCH_TRACE_URL` if needed:
 
 ```powershell
-$env:AGENT_WATCH_TRACE_URL = "http://localhost:8000/api/v1/traces"
+$env:AGENT_WATCH_TRACE_URL = "http://localhost:8000/api/traces"
 pnpm demo:customer-support
 ```
+
+After running the demo, open `http://localhost:3000/traces`. You should see three customer support runs with `success`, `failed`, and `unstable` statuses. Each run includes retrieval, tool call, decision, and LLM spans with automatically generated run/span IDs and latency values.
 
 ## Trace Ingestion
 

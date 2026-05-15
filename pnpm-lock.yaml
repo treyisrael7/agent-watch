@@ -11,6 +11,9 @@ importers:
       '@agent-watch/config':
         specifier: workspace:*
         version: link:packages/config
+      '@agent-watch/sdk':
+        specifier: workspace:*
+        version: link:packages/sdk
       prettier:
         specifier: latest
         version: 3.8.3
